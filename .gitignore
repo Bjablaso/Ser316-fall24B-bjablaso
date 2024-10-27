@@ -1,0 +1,15 @@
+# Ignore Gradle files and build output
+.gradle/
+build/
+
+# Ignore compiled Java classes (optional)
+*.class 
+
+# Ignore IntelliJ and Eclipse project files
+*.iml
+.idea/
+.classpath
+.project
+
+# Ignore OS system files (for macOS)
+.DS_Store
