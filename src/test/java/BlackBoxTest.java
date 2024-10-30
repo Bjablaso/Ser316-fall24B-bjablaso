@@ -26,10 +26,44 @@ class BlackBoxTest {
     @DisplayName("Test makeGuess() across different classes")
     void testMakeGuess(GuessingGame guessingGame) throws GuessOutOfRangeException {
         // Example test case for all the classes
-        double result = guessingGame.makeGuess("example guess");
+        //double result = guessingGame.makeGuess("example guess");
 
         // Check the result 
-        assertEquals(3.0, result);  // This is just an example
+        //assertEquals(3.0, result);// This is just an example
+
+
+        assertEquals(0.0, guessingGame.makeGuess("42"), "Expected correct guess outcome");
+
+
+        assertEquals(1.99, guessingGame.makeGuess("43"), "Expected too high outcome near boundary");
+
+
+        assertEquals(2.01, guessingGame.makeGuess("41"), "Expected too low outcome near boundary");
+
+
+        assertThrows(GuessOutOfRangeException.class, () -> guessingGame.makeGuess("0"),
+                "Expected out-of-range exception for guess '0' (below range)");
+
+
+        assertThrows(GuessOutOfRangeException.class, () -> guessingGame.makeGuess("101"),
+                "Expected out-of-range exception for guess '101' (above range)");
+
+
+        assertEquals(3.0, guessingGame.makeGuess("abc"), "Expected outcome for non-integer input");
+
+
+        guessingGame.makeGuess("42");  // Initial correct guess
+        assertEquals(4.0, guessingGame.makeGuess("42"), "Expected outcome for repeated correct guess");
+
+
+        for (int i = 0; i < 10; i++) {
+            guessingGame.makeGuess("100"); // Exceed the guess limit
+        }
+        assertEquals(5.0, guessingGame.makeGuess("50"), "Expected outcome for guess after exceeding limit");
+
+
+        guessingGame.setGameOver(true);
+        assertEquals(6.0, guessingGame.makeGuess("50"), "Expected outcome for guess after game over");
     }
 
 }
