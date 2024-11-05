@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BlackBoxTest {
 
-    // Method that supplies instances of different classes to the parameterized test
+
     static Stream<Arguments> provideGuessingGameInstances() {
         return Stream.of(
                 Arguments.of(new NumberGuessGame1()),
@@ -20,7 +20,7 @@ class BlackBoxTest {
                 );
     }
 
-    // Parameterized test that tests the same method on different classes
+
     @ParameterizedTest
     @MethodSource("provideGuessingGameInstances")
     @DisplayName("Test makeGuess() across different classes")
@@ -52,12 +52,12 @@ class BlackBoxTest {
         assertEquals(3.0, guessingGame.makeGuess("abc"), "Expected outcome for non-integer input");
 
 
-        guessingGame.makeGuess("42");  // Initial correct guess
+        guessingGame.makeGuess("42");  
         assertEquals(4.0, guessingGame.makeGuess("42"), "Expected outcome for repeated correct guess");
 
 
         for (int i = 0; i < 10; i++) {
-            guessingGame.makeGuess("100"); // Exceed the guess limit
+            guessingGame.makeGuess("100");
         }
         assertEquals(5.0, guessingGame.makeGuess("50"), "Expected outcome for guess after exceeding limit");
 
