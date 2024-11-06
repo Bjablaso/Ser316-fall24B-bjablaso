@@ -52,7 +52,7 @@ class BlackBoxTest {
         assertEquals(3.0, guessingGame.makeGuess("abc"), "Expected outcome for non-integer input");
 
 
-        guessingGame.makeGuess("42");  
+        guessingGame.makeGuess("42");
         assertEquals(4.0, guessingGame.makeGuess("42"), "Expected outcome for repeated correct guess");
 
 
