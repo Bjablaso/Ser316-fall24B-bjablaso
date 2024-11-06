@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Set;
 
 public class GuessingGame {
-
-    public int correctNumber = 42;  // Example number
-    Set<String> previousGuesses = new HashSet<>();
-    public boolean gameOver = false;
-    int Guess_count = 0;
-    double score=0; // game always starts at 0 points/score
+//add access modifie
+    private int correctNumber = 42;  // Example number
+   private  Set<String> previousGuesses = new HashSet<>();
+    private boolean gameOver = false;
+    private int Guess_count = 0;
+    private double score=0; // game always starts at 0 points/score
 
     public void setCorrectNumber(int correctNumber) {
         this.correctNumber = correctNumber;
