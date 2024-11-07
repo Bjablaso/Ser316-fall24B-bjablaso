@@ -76,6 +76,8 @@ public class GuessingGame {
             return GuessOutcome.TOO_LOW.getOutcomeValue() + difference;
         }
 
+        
+
     }
 
     /**
