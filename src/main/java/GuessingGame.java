@@ -95,6 +95,7 @@ public class GuessingGame {
     }
 
     //add method to calculate scores
+    // Fix score logic <---- wouldn't allow me to edit file in cls folder
     protected double calculateScore(int guess) {
         if (guess > correctNumber) {
             score -= (double)(guess - correctNumber);
