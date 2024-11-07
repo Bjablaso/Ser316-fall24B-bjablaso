@@ -35,7 +35,7 @@ public class GuessingGame {
      */
     public double makeGuess(String guess) throws GuessOutOfRangeException {
         return 0.0;
-
+       //<--- where we fix non integer guess
     }
 
     /**
