@@ -75,6 +75,7 @@ public class GuessingGame {
             score -= (correctNumber - guessNum);
             return GuessOutcome.TOO_LOW.getOutcomeValue() + difference;
         }
+
     }
 
     /**
@@ -92,6 +93,7 @@ public class GuessingGame {
 
             if (guessNum > 1 && guessNum <= 99)
                     validGuessCount++;
+
         }
         return validGuessCount;
     }

@@ -4,7 +4,7 @@ public enum GuessOutcome {
     TOO_LOW(2.0),
     NON_INTEGER(3.0),
     REPEATED_GUESS(4.0),
-    EXCEEDED_GUESSES(5.0),   
+    EXCEEDED_GUESSES(5.0),
     GAME_OVER(6.0);
 
     private final double outcomeValue;
