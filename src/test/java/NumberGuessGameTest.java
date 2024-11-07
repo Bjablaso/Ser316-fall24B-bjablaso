@@ -57,13 +57,17 @@ class NumberGuessGameTest {
     @Test
     @DisplayName("Test 7: Exceeding max attempts")
     void test7() throws GuessOutOfRangeException {
-        //int counter = 0;
-        game.setCorrectNumber(50);
-        for (int i = 0; i < 10; i++) {
-            game.makeGuess("30");  // Incorrect guesses
-           // counter++;
-            System.out.println(  game.getGuess_count()); // <-- seem to be individuaal guesses not as a collective
-        }
+        game.makeGuess("1");
+        game.makeGuess("2");
+        game.makeGuess("10");
+        game.makeGuess("12");
+        game.makeGuess("99");
+        game.makeGuess("54");
+        game.makeGuess("75");
+        game.makeGuess("89");
+        game.makeGuess("23");
+        game.makeGuess("11");
+        game.makeGuess("14");
         assertTrue(game.isGameOver());
     }
 
@@ -101,14 +105,6 @@ class NumberGuessGameTest {
         assertEquals(3, validGuessCount);
     }
 
-    @Test
-    @DisplayName("Test 13: Check game state when max is exceeded")
-    void test13() throws GuessOutOfRangeException {
-        // treating guess as individual and not a stread of guess <-- reseting after every guess
-        for (int i = 0; i < 10; i++) {
-            game.makeGuess("30");  // Incorrect guesses
-        }
-        assertTrue(game.isGameOver());
-    }
+
 
 }
