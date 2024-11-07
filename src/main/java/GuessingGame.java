@@ -93,4 +93,15 @@ public class GuessingGame {
     public Boolean getGameOver() {
         return gameOver == true ? Boolean.TRUE : Boolean.FALSE;
     }
+
+    //add method to calculate scores
+    protected double calculateScore(int guess) {
+        if (guess > correctNumber) {
+            score -= (double)(guess - correctNumber);
+            return 1.0 + (double)(guess - correctNumber) / 100.0;
+        } else {
+            score -= (double)(correctNumber - guess);
+            return 2.0 + (double)(correctNumber - guess) / 100.0;
+        }
+    }
 }
