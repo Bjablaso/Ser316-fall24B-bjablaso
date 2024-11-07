@@ -8,7 +8,7 @@ public class GuessingGame {
     public int correctNumber = 42;  // Example number
     Set<String> previousGuesses = new HashSet<>();
     public boolean gameOver = false;
-    int Guess_count = 0;
+   private int Guess_count = 0;
     double score=0; // game always starts at 0 points/score
 
     public void setCorrectNumber(int correctNumber) {
@@ -34,8 +34,47 @@ public class GuessingGame {
      * @throws GuessOutOfRangeException if the guess is outside the allowed range (1-100)
      */
     public double makeGuess(String guess) throws GuessOutOfRangeException {
-        return 0.0;
+        if (gameOver) return GuessOutcome.GAME_OVER.getOutcomeValue();
 
+        if (Guess_count >= 10) {
+            gameOver = true;
+            return GuessOutcome.EXCEEDED_GUESSES.getOutcomeValue();
+        }
+
+        int guessNum;
+        try {
+            guessNum = Integer.parseInt(guess);
+        } catch (NumberFormatException e) {
+            score -= 3.0;
+            return GuessOutcome.NON_INTEGER.getOutcomeValue();
+        }
+
+        if (guessNum < 1 || guessNum > 100) {
+            throw new GuessOutOfRangeException("Guess must be between 1 and 100");
+        }
+
+        if (previousGuesses.contains(guess)) {
+            score -= 2.0;
+            return GuessOutcome.REPEATED_GUESS.getOutcomeValue();
+        }
+
+        previousGuesses.add(guess);
+        Guess_count++;
+
+        if (guessNum == correctNumber) {
+            gameOver = true;
+            return GuessOutcome.CORRECT.getOutcomeValue();
+        }
+
+        double difference = Math.abs(correctNumber - guessNum) / 100.0;
+        if (guessNum > correctNumber) {
+            score -= (guessNum - correctNumber);
+            return GuessOutcome.TOO_HIGH.getOutcomeValue() + difference;
+
+        } else {
+            score -= (correctNumber - guessNum);
+            return GuessOutcome.TOO_LOW.getOutcomeValue() + difference;
+        }
     }
 
     /**
@@ -63,9 +102,25 @@ public class GuessingGame {
     public void resetGame() {
         gameOver = false;
         Guess_count = 0;
-        previousGuesses = null;
+        previousGuesses.clear();
+
     }
 
+    /**
+     * Method return the state if the game
+     * @param gameOver -> boolean value that check game state
+     */
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    /**
+     * Return the state of game
+     * @return True / False
+     */
+    public boolean isGameOver() {
+        return gameOver;
+    }
 
     /**
      * Calculates the average of an array full of numbers
@@ -75,22 +130,15 @@ public class GuessingGame {
             return null;
         }
         int sum = 0;
-        Integer unusedVar = new Integer(0);
+     //   Integer unusedVar = new Integer(0);
         for (Integer guess : guesses) {
             sum += guess;
         }
         return (double) sum / guesses.size();
     }
 
-    public void setGameOver(Boolean isOver) {
-        this.gameOver = isOver;
 
-        if (isOver == true && gameOver == false || gameOver == true) {
-            this.gameOver = false;
-        }
-    }
-
-    public Boolean getGameOver() {
-        return gameOver == true ? Boolean.TRUE : Boolean.FALSE;
+    public int getGuess_count() {
+        return Guess_count;
     }
 }
