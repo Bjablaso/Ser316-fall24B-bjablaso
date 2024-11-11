@@ -1,9 +1,12 @@
-// plugins {
-//      id "com.github.spotbugs" version "5.0.13"
-//      id "checkstyle"
-// }
+import com.github.spotbugs.snom.SpotBugsTask
 
-apply plugin: 'application'
+plugins {
+       id "com.github.spotbugs" version "5.0.13"
+       id "checkstyle"
+       id 'application'
+ }
+
+//apply plugin: 'application'
 
 repositories {
     mavenCentral()
@@ -21,15 +24,13 @@ mainClassName = 'Main'
 
 test {
     useJUnitPlatform()
-
-}
-
-test{
-    exclude '**/BlackBoxTest.class'
+    exclude '**/BlackBoxTest.class'  // Exclude the BlackBoxTest class
 }
 
 
- apply plugin: 'checkstyle'
+
+
+ //apply plugin: 'checkstyle'
 checkstyle {
     // Configure Checkstyle settings
     ignoreFailures = true   // Ignore errors, just log warnings
@@ -40,30 +41,35 @@ checkstyle {
 
   tasks.withType(Checkstyle).configureEach {
       reports {
-          xml.required.set(true)   // Use `required.set(true)` instead of `enabled = true`
+          xml.required.set(false)   // Use `required.set(true)` instead of `enabled = true`
           html.required.set(true)  // Updated syntax for Gradle 9
       }
  }
 
-
+//apply plugin: 'com.github.spotbugs' version '5.1.6'
+//apply plugin: 'com.github.spotbugs'
 
 ///////////////////////////////////////////////////////////////////////
 // Configure SpotBugs
 ///////////////////////////////////////////////////////////////////////
 // To generate an HTML report instead of XML
-// spotbugs {
-//     toolVersion = '4.8.4'
-//     ignoreFailures = true
-//     showProgress = true
-//     effort = 'max'
-//     reportLevel = 'low'
-// }
+ spotbugs {
+       toolVersion = '4.7.3'
+       ignoreFailures = true
+       showProgress = true
+       effort = 'max'
+       reportLevel = 'low'
+ }
 
-// tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
-//     reports {
-//         html.required.set(true)
-//         xml.required.set(false)
-//     }
-// }
+tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
+    reports {
+        html.required.set(true)
+        xml.required.set(false)
+    }
+}
 
 
+tasks.withType(JavaCompile) {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+}

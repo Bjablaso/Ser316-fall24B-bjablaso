@@ -69,8 +69,10 @@ public class GuessingGame {
 
         double difference = Math.abs(correctNumber - guessNum) / 100.0;
         if (guessNum > correctNumber) {
-            score -= (guessNum - correctNumber);
-            return GuessOutcome.TOO_HIGH.getOutcomeValue() + difference;
+            score -= (correctNumber - guessNum);
+            System.out.println(score);
+
+            return GuessOutcome.TOO_HIGH.getOutcomeValue() + score - difference;
 
         } else {
             score -= (correctNumber - guessNum);
