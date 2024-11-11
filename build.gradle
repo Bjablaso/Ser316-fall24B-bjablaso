@@ -21,9 +21,12 @@ mainClassName = 'Main'
 
 test {
     useJUnitPlatform()
-    exclude '**/BlackBoxTest.class'
+
 }
 
+test{
+    exclude '**/BlackBoxTest.class'
+}
 
 
  apply plugin: 'checkstyle'

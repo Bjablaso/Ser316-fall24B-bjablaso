@@ -1,13 +1,15 @@
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-public class guessTest {
+public class GuessTest {
 
     static Stream<Arguments> provideGuessingGameInstance() {
         return Stream.of(
@@ -20,7 +22,7 @@ public class guessTest {
     @DisplayName("Test makeGuess() in GuessingGame class")
     void testMakeGuess(GuessingGame guessingGame) throws GuessOutOfRangeException {
         guessingGame.makeGuess("42");
-        assertTrue(guessingGame.isGameOver(), "Expected game to be in gameOver state after correct guess");
+        assertTrue(guessingGame.isGameOver(), "Game over state enacted");
 
         guessingGame.resetGame();
 
@@ -34,12 +36,12 @@ public class guessTest {
 
         assertThrows(GuessOutOfRangeException.class, () -> guessingGame.makeGuess("0"),
                 "Expected out-of-range exception for guess '0' (below range)");
-        assertFalse(guessingGame.isGameOver(), "Expected game to continue after out-of-range guess");
+        assertFalse(guessingGame.isGameOver(), "Game should continue");
 
 
         assertThrows(GuessOutOfRangeException.class, () -> guessingGame.makeGuess("101"),
                 "Expected out-of-range exception for guess '101' (above range)");
-        assertFalse(guessingGame.isGameOver(), "Expected game to continue after out-of-range guess");
+        assertFalse(guessingGame.isGameOver(), "Guess-out of range continue game");
 
 
         guessingGame.makeGuess("abc");
@@ -48,7 +50,7 @@ public class guessTest {
 
         guessingGame.makeGuess("42");
         guessingGame.makeGuess("42");
-        assertTrue(guessingGame.isGameOver(), "Expected game to remain in gameOver state after repeated correct guess");
+        assertTrue(guessingGame.isGameOver(), "Game over state enacted no changes");
         guessingGame.resetGame();
 
         guessingGame.makeGuess("1");
@@ -62,8 +64,8 @@ public class guessTest {
         guessingGame.makeGuess("23");
         guessingGame.makeGuess("11");
         guessingGame.makeGuess("14");
-        System.out.println(guessingGame.getGuess_count());
-        assertTrue(guessingGame.isGameOver(), "Expected game to be in gameOver state after exceeding guess limit");
+        System.out.println(guessingGame.getGuessCount());
+        assertTrue(guessingGame.isGameOver(), "Game over out of attempt");
 
 
         guessingGame.setGameOver(true);
