@@ -32,7 +32,7 @@ checkstyle {
     ignoreFailures = true   // Ignore errors, just log warnings
     showViolations = false  // Suppress violation reports in the build output
     configFile = file('config/checkstyle/checkstyle.xml')  // Specify the path to the Checkstyle XML file
-    toolVersion = '10.12.3'
+    toolVersion = "8.8"
 }
 
   tasks.withType(Checkstyle).configureEach {
