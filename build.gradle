@@ -26,18 +26,22 @@ test {
 
 
 
-// apply plugin: 'checkstyle'
-//  checkstyle {
-//    // Keep checkstyle a little quieter
-//    ignoreFailures = true
-//    showViolations = false
-//  }
+ apply plugin: 'checkstyle'
+checkstyle {
+    // Configure Checkstyle settings
+    ignoreFailures = true   // Ignore errors, just log warnings
+    showViolations = false  // Suppress violation reports in the build output
+    configFile = file('config/checkstyle/checkstyle.xml')  // Specify the path to the Checkstyle XML file
+    toolVersion = '10.12.3'
+}
 
-//  tasks.withType(Checkstyle) {
-//  }
-//  checkstyle {
-//      toolVersion = "8.8"
-//  }
+  tasks.withType(Checkstyle).configureEach {
+      reports {
+          xml.required.set(true)   // Use `required.set(true)` instead of `enabled = true`
+          html.required.set(true)  // Updated syntax for Gradle 9
+      }
+ }
+
 
 
 ///////////////////////////////////////////////////////////////////////
