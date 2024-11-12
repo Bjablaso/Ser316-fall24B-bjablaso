@@ -1,11 +1,12 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BlackBoxTest {
 
@@ -53,17 +54,17 @@ class BlackBoxTest {
 
 
         guessingGame.makeGuess("42");
-        assertEquals(4.0, guessingGame.makeGuess("42"), "Expected outcome for repeated correct guess");
+        assertEquals(4.0, guessingGame.makeGuess("42"), "Expected guess repeating");
 
 
         for (int i = 0; i < 10; i++) {
             guessingGame.makeGuess("100");
         }
-        assertEquals(5.0, guessingGame.makeGuess("50"), "Expected outcome for guess after exceeding limit");
+        assertEquals(5.0, guessingGame.makeGuess("50"), "Expected guess limit to exceed");
 
 
         guessingGame.setGameOver(true);
-        assertEquals(6.0, guessingGame.makeGuess("50"), "Expected outcome for guess after game over");
+        assertEquals(6.0, guessingGame.makeGuess("50"), "Expected game over");
     }
 
 }

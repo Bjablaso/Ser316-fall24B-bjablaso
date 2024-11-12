@@ -1,15 +1,13 @@
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class GuessingGame {
-//add access modifie
+
     private int correctNumber = 42;  // Example number
-   private  Set<String> previousGuesses = new HashSet<>();
+    Set<String> previousGuesses = new HashSet<>();
     private boolean gameOver = false;
-    private int Guess_count = 0;
-    private double score=0; // game always starts at 0 points/score
+    private int guessCount = 0;
+   private  double score = 0; // game always starts at 0 points/score
 
     public void setCorrectNumber(int correctNumber) {
         this.correctNumber = correctNumber;
@@ -24,7 +22,7 @@ public class GuessingGame {
      * - 4.0: Guess was already made
      * - 5.0: Game over after 10 incorrect guesses, should set flag accordingly
      * - 6.0: Guess made after game is over
-     *
+     *<p></p>
      * The score is only set as described above. 
      * The method should also change Guess_count when appropriate and previousGuesses to keep track
      * of what has been guessed already. Only valid guesses will count toward these. 
@@ -34,8 +32,55 @@ public class GuessingGame {
      * @throws GuessOutOfRangeException if the guess is outside the allowed range (1-100)
      */
     public double makeGuess(String guess) throws GuessOutOfRangeException {
-        return 0.0;
-       //<--- where we fix non integer guess
+        if (gameOver) {
+            return GuessOutcome.GAME_OVER.getOutcomeValue();
+        }
+
+
+        if (guessCount >= 10) {
+            gameOver = true;
+            return GuessOutcome.EXCEEDED_GUESSES.getOutcomeValue();
+        }
+
+        int guessNum;
+        try {
+            guessNum = Integer.parseInt(guess);
+        } catch (NumberFormatException e) {
+            score -= 3.0;
+            return GuessOutcome.NON_INTEGER.getOutcomeValue();
+        }
+
+        if (guessNum < 1 || guessNum > 100) {
+            throw new GuessOutOfRangeException("Guess must be between 1 and 100");
+        }
+
+        if (previousGuesses.contains(guess)) {
+            score -= 2.0;
+            return GuessOutcome.REPEATED_GUESS.getOutcomeValue();
+        }
+
+        previousGuesses.add(guess);
+        guessCount++;
+
+        if (guessNum == correctNumber) {
+            gameOver = true;
+            return GuessOutcome.CORRECT.getOutcomeValue();
+        }
+
+        double difference = Math.abs(correctNumber - guessNum) / 100.0;
+        if (guessNum > correctNumber) {
+            score -= (correctNumber - guessNum);
+            System.out.println(score);
+
+            return GuessOutcome.TOO_HIGH.getOutcomeValue() + score - difference;
+
+        } else {
+            score -= (correctNumber - guessNum);
+            return GuessOutcome.TOO_LOW.getOutcomeValue() + difference;
+        }
+
+        
+
     }
 
     /**
@@ -51,58 +96,62 @@ public class GuessingGame {
         for (String guess : guesses) {
             int guessNum = Integer.parseInt(guess);
 
-            if (guessNum > 1 && guessNum <= 99)
-                    validGuessCount++;
+            if (guessNum > 1 && guessNum <= 99) {
+                validGuessCount++;
+            }
+
+
         }
         return validGuessCount;
     }
 
     /**
-     * Resets the game
+     * Resets the game.
      */
     public void resetGame() {
         gameOver = false;
-        Guess_count = 0;
-        previousGuesses = null;
+        guessCount = 0;
+        previousGuesses.clear();
+
     }
 
+    /**
+     * Method return the state if the game.
+     * @param gameOver -> boolean value that check game state
+     */
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
 
     /**
-     * Calculates the average of an array full of numbers
+     * Return the state of game.
+     * @return True / False
+     */
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    /**
+     * Calculates the average of an array full of numbers.
      */
     public Double calculateAverage(Set<Integer> guesses) {
         if (guesses == null) {
             return null;
         }
         int sum = 0;
-        ///Integer unusedVar = new Integer(0);
+        //   Integer unusedVar = new Integer(0);
         for (Integer guess : guesses) {
             sum += guess;
         }
         return (double) sum / guesses.size();
     }
 
-    public void setGameOver(Boolean isOver) {
-        this.gameOver = isOver;
 
-        if (isOver == true && gameOver == false || gameOver == true) {
-            this.gameOver = false;
-        }
+    public int getGuessCount() {
+        return guessCount;
     }
 
-    public Boolean getGameOver() {
-        return gameOver == true ? Boolean.TRUE : Boolean.FALSE;
-    }
-
-    //add method to calculate scores
-    // Fix score logic <---- wouldn't allow me to edit file in cls folder
-    protected double calculateScore(int guess) {
-        if (guess > correctNumber) {
-            score -= (double)(guess - correctNumber);
-            return 1.0 + (double)(guess - correctNumber) / 100.0;
-        } else {
-            score -= (double)(correctNumber - guess);
-            return 2.0 + (double)(correctNumber - guess) / 100.0;
-        }
+    public int getCorrectNumber() {
+        return correctNumber;
     }
 }
