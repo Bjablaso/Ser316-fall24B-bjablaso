@@ -75,7 +75,7 @@ public class GuessingGame {
             return null;
         }
         int sum = 0;
-        Integer unusedVar = new Integer(0);
+        ///Integer unusedVar = new Integer(0);
         for (Integer guess : guesses) {
             sum += guess;
         }
