@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Set;
 
 public class GuessingGame {
-
-    public int correctNumber = 42;  // Example number
-    Set<String> previousGuesses = new HashSet<>();
-    public boolean gameOver = false;
-    int Guess_count = 0;
-    double score=0; // game always starts at 0 points/score
+//add access modifie
+    private int correctNumber = 42;  // Example number
+   private  Set<String> previousGuesses = new HashSet<>();
+    private boolean gameOver = false;
+    private int Guess_count = 0;
+    private double score=0; // game always starts at 0 points/score
 
     public void setCorrectNumber(int correctNumber) {
         this.correctNumber = correctNumber;
@@ -35,7 +35,7 @@ public class GuessingGame {
      */
     public double makeGuess(String guess) throws GuessOutOfRangeException {
         return 0.0;
-
+       //<--- where we fix non integer guess
     }
 
     /**
@@ -92,5 +92,17 @@ public class GuessingGame {
 
     public Boolean getGameOver() {
         return gameOver == true ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    //add method to calculate scores
+    // Fix score logic <---- wouldn't allow me to edit file in cls folder
+    protected double calculateScore(int guess) {
+        if (guess > correctNumber) {
+            score -= (double)(guess - correctNumber);
+            return 1.0 + (double)(guess - correctNumber) / 100.0;
+        } else {
+            score -= (double)(correctNumber - guess);
+            return 2.0 + (double)(correctNumber - guess) / 100.0;
+        }
     }
 }

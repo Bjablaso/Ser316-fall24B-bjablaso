@@ -1,4 +1,7 @@
-
+// plugins {
+//      id "com.github.spotbugs" version "5.0.13"
+//      id "checkstyle"
+// }
 
 plugins {
     id "com.github.spotbugs" version "5.0.13"
@@ -74,3 +77,5 @@ tasks.withType(JavaCompile) {
     sourceCompatibility = '17'
     targetCompatibility = '17'
 }
+
+
