@@ -3,11 +3,11 @@ import java.util.Set;
 
 public class GuessingGame {
 
-    public int correctNumber = 42;  // Example number
+    private int correctNumber = 42;  // Example number
     Set<String> previousGuesses = new HashSet<>();
-    public boolean gameOver = false;
+    private boolean gameOver = false;
     private int guessCount = 0;
-    double score = 0; // game always starts at 0 points/score
+   private  double score = 0; // game always starts at 0 points/score
 
     public void setCorrectNumber(int correctNumber) {
         this.correctNumber = correctNumber;
@@ -149,5 +149,9 @@ public class GuessingGame {
 
     public int getGuessCount() {
         return guessCount;
+    }
+
+    public int getCorrectNumber() {
+        return correctNumber;
     }
 }

@@ -86,7 +86,7 @@ class NumberGuessGameTest {
     @DisplayName("Test 9: Check guess number correction")
     void test9() {
         game.setCorrectNumber(60);
-        assertEquals(60, game.correctNumber);
+        assertEquals(60, game.getCorrectNumber());
     }
 
 
