@@ -7,7 +7,7 @@ public class GuessingGame {
     Set<String> previousGuesses = new HashSet<>();
     private boolean gameOver = false;
     private int guessCount = 0;
-   private  double score = 0; // game always starts at 0 points/score
+    private  double score = 0; // game always starts at 0 points/score
 
     public void setCorrectNumber(int correctNumber) {
         this.correctNumber = correctNumber;
