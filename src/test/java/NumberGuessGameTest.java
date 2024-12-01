@@ -32,7 +32,7 @@ class NumberGuessGameTest {
     @DisplayName("Test 2: Out-of-range guess throws exception")
     void test2() {
         assertThrows(GuessOutOfRangeException.class, () -> game.makeGuess("150"),
-                "Expected GuessOutOfRangeException for out-of-range guess");
+                "Expected GuessgOutOfRangeException for out-of-range guess");
     }
 
     @Test
