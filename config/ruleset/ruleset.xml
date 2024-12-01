@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<ruleset name="Custom ruleset"
+		 xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
+  http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+	<description>
+		This ruleset checks for common programming flaws like unused variables, empty catch blocks, duplicate code, and poor design metrics.
+	</description>
+
+	<!-- Design Rules -->
+	<rule ref="category/java/design.xml/CyclomaticComplexity">
+		<properties>
+			<property name="methodReportLevel" value="10" />
+		</properties>
+	</rule>
+	<rule ref="category/java/design.xml/CouplingBetweenObjects">
+		<properties>
+			<property name="threshold" value="10" />
+		</properties>
+	</rule>
+	<rule ref="category/java/design.xml/ExcessiveClassLength">
+		<properties>
+			<property name="minimum" value="100" />
+		</properties>
+	</rule>
+	<rule ref="category/java/design.xml/ExcessiveMethodLength">
+		<properties>
+			<property name="minimum" value="30" />
+		</properties>
+	</rule>
+	<rule ref="category/java/design.xml/NPathComplexity">
+		<properties>
+			<property name="reportLevel" value="10" />
+		</properties>
+	</rule>
+	<rule ref="category/java/design.xml/ExcessiveParameterList" />
+
+	<!-- Error-Prone Rules -->
+	<rule ref="category/java/errorprone.xml/UnusedLocalVariable" />
+	<rule ref="category/java/errorprone.xml/UnusedPrivateField" />
+	<rule ref="category/java/errorprone.xml/AvoidEmptyCatchBlocks" />
+	<rule ref="category/java/errorprone.xml/AvoidInstantiatingObjectsInLoops" />
+
+	<!-- Best Practices -->
+	<rule ref="category/java/bestpractices.xml/AvoidDuplicateLiterals" />
+	<rule ref="category/java/bestpractices.xml/LooseCoupling" />
+
+	<!-- Documentation -->
+	<rule ref="category/java/documentation.xml/CommentRequired">
+		<properties>
+			<property name="commentTypes" value="JAVADOC" />
+		</properties>
+	</rule>
+</ruleset>
