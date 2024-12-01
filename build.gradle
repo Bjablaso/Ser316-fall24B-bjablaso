@@ -1,9 +1,10 @@
-import com.github.spotbugs.snom.SpotBugsTask
+
 
 plugins {
        id "com.github.spotbugs" version "5.0.13"
        id "checkstyle"
        id 'application'
+    id 'pmd'
  }
 
 //apply plugin: 'application'
@@ -72,4 +73,28 @@ tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
 tasks.withType(JavaCompile) {
     sourceCompatibility = '17'
     targetCompatibility = '17'
+}
+//////////////////////////////////////////////////////////////////
+//PMD
+/////////////////////////////////////////////////////////////////
+
+pmd {
+    ignoreFailures = true
+    toolVersion = '6.54.0' // Specify the PMD tool version
+}
+
+tasks.withType(Pmd) {
+    reports {
+        xml.required.set(true) // Generate an XML report
+        html.required.set(false) // Disable HTML report if not needed
+    }
+    ruleSetConfig = resources.text.fromFile('config/ruleset/ruleset.xml')
+}
+
+// Specify source sets explicitly
+pmdMain {
+    source = sourceSets.main.allJava
+    reports {
+        xml.required.set(true)
+    }
 }
