@@ -65,4 +65,3 @@ _Link to the repository._
 
 10. **Excessive Class Length**: Classes exceeding reasonable length (e.g., `Main` with over 200 lines) should be split into smaller, cohesive classes to improve maintainability.
 
----
