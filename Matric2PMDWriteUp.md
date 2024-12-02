@@ -1,14 +1,6 @@
 
 # **Metrics 2 Code Review Defect List**
 
-## **Reviewer**
-_To be filled during review._
-
-## **GitHub Repository**
-_Link to the repository._
-
----
-
 ## **Defect Table**
 
 | ID # | Class                     | Problem Description                                  | Problem                                                                                     | Line Number | Category  | Severity  |
@@ -70,23 +62,3 @@ _Link to the repository._
 - **Impact**: Creates redundancy and confusion, which can hinder code maintainability.
 - **Recommendation**: Eliminate duplicate declarations and streamline variable usage.
 
----
-
-## **Summary and Recommendations**
-
-1. **Improve Serialization**:
-    - Add `serialVersionUID` to all Serializable classes to avoid deserialization issues.
-
-2. **Refactor Conditionals**:
-    - Replace hardcoded literals in conditions with named constants for better maintainability.
-
-3. **Fix Data Flow Anomalies**:
-    - Refactor variable definitions and usages (e.g., `guessNum`, `validGuessCount`) to simplify and avoid redundancy.
-
-4. **Enhance Maintainability**:
-    - Address all code smells and ensure that variables and methods are concise and well-documented.
-
-5. **Test Thoroughly**:
-    - Ensure all fixes are covered with appropriate unit tests to prevent regressions.
-
----
