@@ -36,29 +36,29 @@
 - **Class**: GuessOutOfRangeException
 - **Description**: The `GuessOutOfRangeException` class implements `Serializable` but is missing a `serialVersionUID`.
 - **Impact**: This can cause issues during deserialization if the class structure changes between versions.
-- **Recommendation**: Add a `private static final long serialVersionUID` to the class with a generated or manually assigned value.
+
 
 ### **2. Avoid Literals in Conditional Statements**
 - **Class**: GuessingGame
 - **Description**: Literal values are used in an `if` condition within the `makeGuess` method.
 - **Impact**: Reduces maintainability and readability, as modifying conditions later requires changing hardcoded values.
-- **Recommendation**: Replace the literal with a named constant, e.g., `MAX_GUESS_LIMIT`.
+
 
 ### **3. Dataflow Anomaly: 'DU' Anomaly for `guessNum`**
 - **Class**: GuessingGame
 - **Description**: The variable `guessNum` is defined but not used correctly in the `makeGuess` method, which can lead to misuse or bugs.
 - **Impact**: This anomaly suggests potential logic issues and makes the code less predictable.
-- **Recommendation**: Review and refactor the method to ensure proper usage of `guessNum`.
+
 
 ### **4. Dataflow Anomaly: 'DD' Anomaly for `validGuessCount`**
 - **Class**: GuessingGame
 - **Description**: The variable `validGuessCount` is defined multiple times without being used or reset appropriately in the `processValidGuesses` method.
 - **Impact**: Repeated definitions clutter the code and may result in unpredictable behavior.
-- **Recommendation**: Consolidate the variable's usage and reset it before redefining.
+
 
 ### **5. Duplicate 'DD' Anomaly for `validGuessCount`**
 - **Class**: GuessingGame
 - **Description**: Duplicate definitions for the `validGuessCount` variable are present on the same line.
 - **Impact**: Creates redundancy and confusion, which can hinder code maintainability.
-- **Recommendation**: Eliminate duplicate declarations and streamline variable usage.
+
 
