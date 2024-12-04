@@ -1,4 +1,4 @@
-public enum GuessOutcome {
+enum GuessOutcome {
     CORRECT(0.0),
     TOO_HIGH(1.0),
     TOO_LOW(2.0),
@@ -16,5 +16,4 @@ public enum GuessOutcome {
     public double getOutcomeValue() {
         return outcomeValue;
     }
-
 }

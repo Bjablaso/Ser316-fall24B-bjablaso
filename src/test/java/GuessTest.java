@@ -21,7 +21,8 @@ public class GuessTest {
     @MethodSource("provideGuessingGameInstance")
     @DisplayName("Test makeGuess() in GuessingGame class")
     void testMakeGuess(GuessingGame guessingGame) throws GuessOutOfRangeException {
-        guessingGame.makeGuess("42");
+        guessingGame.setCorrectNumber(50);
+        guessingGame.makeGuess("50");
         assertTrue(guessingGame.isGameOver(), "Game over state enacted");
 
         guessingGame.resetGame();

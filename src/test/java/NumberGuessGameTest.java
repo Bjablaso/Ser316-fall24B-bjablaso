@@ -48,14 +48,14 @@ class NumberGuessGameTest {
     @DisplayName("Test 5: Too-high guess ")
     void test5() throws GuessOutOfRangeException {
         game.setCorrectNumber(40);
-        assertEquals(1.99, game.makeGuess("41"));
+        assertEquals(1.0, game.makeGuess("41"));
     }
 
     @Test
     @DisplayName("Test 6: Too-low ")
     void test6() throws GuessOutOfRangeException {
         game.setCorrectNumber(50);
-        assertEquals(2.01, game.makeGuess("49"));
+        assertEquals(2.0, game.makeGuess("49"));
     }
 
     @Test
@@ -108,6 +108,30 @@ class NumberGuessGameTest {
         int validGuessCount = game.processValidGuesses(guesses);
         assertEquals(3, validGuessCount);
     }
+
+    @Test
+    @DisplayName("Test processValidGuesses with dynamic difficulty levels")
+    void testProcessValidGuessesWithDifficultyLevels() {
+        game.setDifficulty(DifficultyLevel.HARD);
+        String[] guesses = {"10", "250", "180", "abc", "-5"};
+        assertEquals(2, game.processValidGuesses(guesses)); // Valid: 10, 180
+    }
+
+    @Test
+    @DisplayName("Test makeGuess with custom scoring strategy")
+    void testMakeGuessWithCustomScoring() throws GuessOutOfRangeException {
+        game.setDifficulty(DifficultyLevel.EASY);       // Set difficulty to EASY (range 1–50)
+        game.setScoringStrategy(new PenaltyScoring()); // Set scoring strategy to PenaltyScoring
+        game.setCorrectNumber(20);                     // Correct number is 20
+
+        assertEquals(0.0, game.makeGuess("20"), "Correct guess should result in no penalty."); // Correct guess
+
+        // For guess = 30, correct = 20, difference = 10
+        // Penalty = (difference / 5) + 1 = (10 / 5) + 1 = 3
+        // Starting score is 0.0, final score should be -3.0
+        assertEquals(-3.0, game.makeGuess("30"), "Penalty calculation for difference of 10 should result in -3."); // Penalty applied
+    }
+
 
 
 
