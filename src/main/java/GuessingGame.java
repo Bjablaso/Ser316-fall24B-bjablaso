@@ -90,7 +90,12 @@ public class GuessingGame {
         }
     }
 
-    public Boolean getGameOver() {
+    public boolean isGameOver() {
         return gameOver == true ? Boolean.TRUE : Boolean.FALSE;
     }
+
+    public int getGuessCount() {
+        return Guess_count;
+    }
+
 }
