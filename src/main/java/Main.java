@@ -7,10 +7,12 @@ public class Main {
      * @param args can take in argument
      */
     public static void main(String[] args) {
-        GuessingGame game = new GuessingGame();
+        GuessingGame game = new GuessingGame.Builder()
+                .withDifficulty(DifficultyLevel.MEDIUM)
+                .withScoringStrategy(new SimpleScoring())
+                .build();
 
         try {
-            // simulate guess, work with implementation of makeGuess.
             System.out.println(game.makeGuess("50"));  // Too high
             System.out.println(game.makeGuess("35"));  // Too high
             System.out.println(game.makeGuess("abc"));  // Non-numeric input
@@ -19,8 +21,5 @@ public class Main {
         } catch (GuessOutOfRangeException e) {
             System.out.println(e.getMessage());
         }
-
-
-        int numberGuess;
     }
 }

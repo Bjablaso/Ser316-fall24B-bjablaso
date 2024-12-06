@@ -4,75 +4,103 @@ import java.util.Set;
 public class GuessingGame {
 
     private int correctNumber;
-    private DifficultyLevel difficultyLevel = DifficultyLevel.MEDIUM; // Default difficulty level
-    private Set<String> previousGuesses = new HashSet<>();
-    private boolean gameOver = false;
-    private int guessCount = 0;
-    private double score = 0.0; // Starting score
-    private ScoringStrategy scoringStrategy = new SimpleScoring(); // Default scoring strategy
+    private DifficultyLevel difficultyLevel;
+    private Set<String> previousGuesses;
+    private boolean gameOver;
+    private int guessCount;
+    private double score;
+    private ScoringStrategy scoringStrategy;
+    private static final int MAX_GUESSES = 10;
 
-    // Setters
-    public void setDifficulty(DifficultyLevel level) {
-        this.difficultyLevel = level;
-        this.correctNumber = (int) (Math.random() * (level.getMax() - level.getMin() + 1)) + level.getMin();
+    // Private constructor for Builder
+    GuessingGame(Builder builder) {
+        this.difficultyLevel = builder.difficultyLevel;
+        this.correctNumber = builder.correctNumber;
+        this.previousGuesses = new HashSet<>();
+        this.gameOver = false;
+        this.guessCount = 0;
+        this.score = 0.0;
+        this.scoringStrategy = builder.scoringStrategy;
     }
 
-    public void setScoringStrategy(ScoringStrategy strategy) {
-        this.scoringStrategy = strategy;
+    // Helper Methods
+    private boolean isGuessValid(int guessNum) {
+        return guessNum >= difficultyLevel.getMin() && guessNum <= difficultyLevel.getMax();
     }
 
-    public void setCorrectNumber(int correctNumber) {
-        this.correctNumber = correctNumber;
+    private void applyPenaltyForInvalidGuess(String guess) {
+        if (previousGuesses.contains(guess)) {
+            score -= 2.0; // Penalty for repeated guess
+        } else {
+            score -= 3.0; // Penalty for invalid guess
+        }
     }
 
-    // Getters
-    public int getCorrectNumber() {
-        return correctNumber;
-    }
-
-    public int getGuessCount() {
-        return guessCount;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    // Game methods
+    // Game Methods
     public double makeGuess(String guess) throws GuessOutOfRangeException {
         if (gameOver) {
             return GuessOutcome.GAME_OVER.getOutcomeValue();
         }
-        if (guessCount >= 10) {
+
+        if (guessCount == MAX_GUESSES) {
             gameOver = true; // Mark game over if max attempts are reached
+            System.out.println(gameOver);
             return GuessOutcome.EXCEEDED_GUESSES.getOutcomeValue();
         }
+
         int guessNum;
         try {
             guessNum = Integer.parseInt(guess);
         } catch (NumberFormatException e) {
-            score -= 3.0; // Deduct points for invalid input
+            applyPenaltyForInvalidGuess(guess);
             return GuessOutcome.NON_INTEGER.getOutcomeValue();
         }
-        if (guessNum < difficultyLevel.getMin() || guessNum > difficultyLevel.getMax()) {
+
+        if (!isGuessValid(guessNum)) {
             throw new GuessOutOfRangeException("Guess must be between " + difficultyLevel.getMin() + " and " + difficultyLevel.getMax());
         }
+
         if (previousGuesses.contains(guess)) {
-            score -= 2.0; // Deduct points for repeated guess
+            applyPenaltyForInvalidGuess(guess);
             return GuessOutcome.REPEATED_GUESS.getOutcomeValue();
         }
+
         previousGuesses.add(guess);
         guessCount++;
+        System.out.println("Guess count : " + guessCount);
+
         if (guessNum == correctNumber) {
-            gameOver = true; // Mark game over on correct guess
+            gameOver = true;
             return GuessOutcome.CORRECT.getOutcomeValue();
         }
+
         score = scoringStrategy.calculateScore(correctNumber, guessNum, score);
-        return guessNum > correctNumber
-                ? GuessOutcome.TOO_HIGH.getOutcomeValue()
-                : GuessOutcome.TOO_LOW.getOutcomeValue();
+        return guessNum > correctNumber ? GuessOutcome.TOO_HIGH.getOutcomeValue() : GuessOutcome.TOO_LOW.getOutcomeValue();
     }
 
+    // Additional Methods
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public int getCorrectNumber() {
+        return correctNumber;
+    }
+
+    public Double calculateAverage(Set<Integer> guesses) {
+        if (guesses == null || guesses.isEmpty()) {
+            return null;
+        }
+        int sum = 0;
+        for (Integer guess : guesses) {
+            sum += guess;
+        }
+        return (double) sum / guesses.size();
+    }
 
     public int processValidGuesses(String[] guesses) {
         if (difficultyLevel == null) {
@@ -100,24 +128,54 @@ public class GuessingGame {
         correctNumber = (int) (Math.random() * (difficultyLevel.getMax() - difficultyLevel.getMin() + 1)) + difficultyLevel.getMin();
     }
 
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
+    public void setCorrectNumber(int correctNumber) {
+        if (difficultyLevel == null) {
+            throw new IllegalStateException("Difficulty level must be set before setting a correct number.");
+        }
+        if (correctNumber < difficultyLevel.getMin() || correctNumber > difficultyLevel.getMax()) {
+            throw new IllegalArgumentException("Correct number must be within the range of the difficulty level.");
+        }
+        this.correctNumber = correctNumber;
     }
 
-    public Double calculateAverage(Set<Integer> guesses) {
-        if (guesses == null || guesses.isEmpty()) {
-            return null;
-        }
-        int sum = 0;
-        for (Integer guess : guesses) {
-            sum += guess;
-        }
-        return (double) sum / guesses.size();
+    public int getGuessCount() {
+        return guessCount;
     }
+
+
+    // Builder Class
+    public static class Builder {
+        private DifficultyLevel difficultyLevel = DifficultyLevel.MEDIUM;
+        private int correctNumber = -1; // Default placeholder
+        private ScoringStrategy scoringStrategy = new SimpleScoring();
+
+        public Builder withDifficulty(DifficultyLevel level) {
+            this.difficultyLevel = level;
+            this.correctNumber = (int) (Math.random() * (level.getMax() - level.getMin() + 1)) + level.getMin();
+            return this;
+        }
+
+        public Builder withCustomNumber(int correctNumber) {
+            this.correctNumber = correctNumber;
+            return this;
+        }
+
+        public Builder withScoringStrategy(ScoringStrategy strategy) {
+            this.scoringStrategy = strategy;
+            return this;
+        }
+
+        public GuessingGame build() {
+            if (correctNumber == -1) {
+                throw new IllegalStateException("Correct number must be set either explicitly or via difficulty level.");
+            }
+            return new GuessingGame(this);
+        }
+    }
+
+
+
 }
-
-
-
 
 
 /**

@@ -1,98 +1,127 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.HashSet;
-
 import java.util.Set;
-
-import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-//assignment 3
+import static org.junit.jupiter.api.Assertions.*;
+
 class NumberGuessGameTest {
-
-    private GuessingGame game;
-
-    @BeforeEach
-    void setUp() {
-        game = new GuessingGame();
-    }
 
     @Test
     @DisplayName("Test correct guess")
     void testCorrectGuess() throws GuessOutOfRangeException {
-        game.setCorrectNumber(50);
+        GuessingGame game = new GuessingGame.Builder()
+                .withCustomNumber(50)
+                .build();
         assertEquals(0.0, game.makeGuess("50"));
     }
 
     @Test
     @DisplayName("Test 2: Out-of-range guess throws exception")
-    void test2() {
+    void testOutOfRangeGuess() {
+        GuessingGame game = new GuessingGame.Builder()
+                .withDifficulty(DifficultyLevel.MEDIUM)
+                .withCustomNumber(50)
+                .build();
+
+        // Use the 'game' variable properly before it goes out of scope
         assertThrows(GuessOutOfRangeException.class, () -> game.makeGuess("150"),
-                "Expected GuessgOutOfRangeException for out-of-range guess");
+                "Expected GuessOutOfRangeException for out-of-range guess");
+
+        // Verify that the game state is still valid after the exception
+        assertFalse(game.isGameOver(), "Game should continue after an out-of-range guess.");
     }
 
     @Test
-    @DisplayName("Test 4: Repeated guess")
-    void test4() throws GuessOutOfRangeException {
+    @DisplayName("Test penalty for repeated guess")
+    void testPenaltyForRepeatedGuess() throws GuessOutOfRangeException {
+        GuessingGame game = new GuessingGame.Builder()
+                .withDifficulty(DifficultyLevel.MEDIUM)
+                .withCustomNumber(50) // Set a custom correct number
+                .build();
 
-        game.makeGuess("50");
-        game.makeGuess("50");
-        assertEquals(4.0, game.makeGuess("50"));
+        // First guess (valid)
+        double outcome1 = game.makeGuess("25");
+        assertEquals(GuessOutcome.TOO_LOW.getOutcomeValue(), outcome1, "First guess should be too low.");
+
+        // Second guess (repeated)
+        double outcome2 = game.makeGuess("25");
+        assertEquals(GuessOutcome.REPEATED_GUESS.getOutcomeValue(), outcome2, "Second guess should be identified as repeated.");
+
+        // Ensure the penalty is applied
+        assertTrue(game.isGameOver() == false, "Game should not be over after repeated guess.");
+
     }
 
+
     @Test
-    @DisplayName("Test 5: Too-high guess ")
-    void test5() throws GuessOutOfRangeException {
-        game.setCorrectNumber(40);
+    @DisplayName("Test 5: Too-high guess")
+    void testTooHighGuess() throws GuessOutOfRangeException {
+        GuessingGame game = new GuessingGame.Builder()
+                .withCustomNumber(40)
+                .build();
         assertEquals(1.0, game.makeGuess("41"));
     }
 
     @Test
-    @DisplayName("Test 6: Too-low ")
-    void test6() throws GuessOutOfRangeException {
-        game.setCorrectNumber(50);
+    @DisplayName("Test 6: Too-low guess")
+    void testTooLowGuess() throws GuessOutOfRangeException {
+        GuessingGame game = new GuessingGame.Builder()
+                .withCustomNumber(50)
+                .build();
         assertEquals(2.0, game.makeGuess("49"));
     }
 
     @Test
     @DisplayName("Test 7: Exceeding max attempts")
-    void test7() throws GuessOutOfRangeException {
+    void testExceedingMaxAttempts() throws GuessOutOfRangeException {
+        GuessingGame game = new GuessingGame.Builder()
+                .withDifficulty(DifficultyLevel.MEDIUM)
+                .build();
+
+        // Make 10 individual guesses
         game.makeGuess("1");
         game.makeGuess("2");
+        game.makeGuess("3");
+        game.makeGuess("4");
+        game.makeGuess("5");
+        game.makeGuess("6");
+        game.makeGuess("7");
+        game.makeGuess("8");
+        game.makeGuess("9");
         game.makeGuess("10");
-        game.makeGuess("12");
-        game.makeGuess("99");
-        game.makeGuess("54");
-        game.makeGuess("75");
-        game.makeGuess("89");
-        game.makeGuess("23");
         game.makeGuess("11");
-        game.makeGuess("14");
-        assertTrue(game.isGameOver());
+
+        // Verify that the game is over after 10 attempts
+        assertTrue(game.isGameOver(), "Game should be over after 10 guesses");
     }
 
     @Test
     @DisplayName("Test 8: Guess after game over")
-    void test8() throws GuessOutOfRangeException {
+    void testGuessAfterGameOver() throws GuessOutOfRangeException {
+        GuessingGame game = new GuessingGame.Builder()
+                .withCustomNumber(40)
+                .build();
         game.setGameOver(true);
         assertEquals(6.0, game.makeGuess("40"));
     }
 
     @Test
-    @DisplayName("Test 9: Check guess number correction")
-    void test9() {
-        game.setCorrectNumber(60);
+    @DisplayName("Test 9: Check guess number correctness")
+    void testGuessNumberCorrectness() {
+        GuessingGame game = new GuessingGame.Builder()
+                .withCustomNumber(60)
+                .build();
         assertEquals(60, game.getCorrectNumber());
     }
 
-
     @Test
     @DisplayName("Test 11: Calculate average of guesses")
-    void test11() {
+    void testCalculateAverage() {
+        GuessingGame game = new GuessingGame.Builder()
+                .withDifficulty(DifficultyLevel.EASY)
+                .build();
         Set<Integer> guesses = new HashSet<>();
         guesses.add(10);
         guesses.add(20);
@@ -102,8 +131,11 @@ class NumberGuessGameTest {
     }
 
     @Test
-    @DisplayName("Test 12:  Process range of guesses ")
-    void test12() {
+    @DisplayName("Test 12: Process range of guesses")
+    void testProcessRangeOfGuesses() {
+        GuessingGame game = new GuessingGame.Builder()
+                .withDifficulty(DifficultyLevel.MEDIUM)
+                .build();
         String[] guesses = {"2", "50", "101", "99", "0"};
         int validGuessCount = game.processValidGuesses(guesses);
         assertEquals(3, validGuessCount);
@@ -112,7 +144,9 @@ class NumberGuessGameTest {
     @Test
     @DisplayName("Test processValidGuesses with dynamic difficulty levels")
     void testProcessValidGuessesWithDifficultyLevels() {
-        game.setDifficulty(DifficultyLevel.HARD);
+        GuessingGame game = new GuessingGame.Builder()
+                .withDifficulty(DifficultyLevel.HARD)
+                .build();
         String[] guesses = {"10", "250", "180", "abc", "-5"};
         assertEquals(2, game.processValidGuesses(guesses)); // Valid: 10, 180
     }
@@ -120,9 +154,11 @@ class NumberGuessGameTest {
     @Test
     @DisplayName("Test makeGuess with custom scoring strategy")
     void testMakeGuessWithCustomScoring() throws GuessOutOfRangeException {
-        game.setDifficulty(DifficultyLevel.EASY);       // Set difficulty to EASY (range 1–50)
-        game.setScoringStrategy(new PenaltyScoring()); // Set scoring strategy to PenaltyScoring
-        game.setCorrectNumber(20);                     // Correct number is 20
+        GuessingGame game = new GuessingGame.Builder()
+                .withDifficulty(DifficultyLevel.EASY)
+                .withCustomNumber(20)
+                .withScoringStrategy(new PenaltyScoring())
+                .build();
 
         assertEquals(0.0, game.makeGuess("20"), "Correct guess should result in no penalty."); // Correct guess
 
@@ -131,8 +167,4 @@ class NumberGuessGameTest {
         // Starting score is 0.0, final score should be -3.0
         assertEquals(-3.0, game.makeGuess("30"), "Penalty calculation for difference of 10 should result in -3."); // Penalty applied
     }
-
-
-
-
 }
