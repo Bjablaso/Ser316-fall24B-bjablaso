@@ -13,11 +13,11 @@ public class Main {
                 .build();
 
         try {
-            System.out.println(game.makeGuess("50"));  // Too high
-            System.out.println(game.makeGuess("35"));  // Too high
-            System.out.println(game.makeGuess("abc"));  // Non-numeric input
-            System.out.println(game.makeGuess("42"));  // Correct guess
-            System.out.println(game.makeGuess("105"));  // Should throw GuessOutOfRangeException
+            System.out.println(game.makeGuess("50"));
+            System.out.println(game.makeGuess("35"));
+            System.out.println(game.makeGuess("abc"));
+            System.out.println(game.makeGuess("42"));
+            System.out.println(game.makeGuess("105"));
         } catch (GuessOutOfRangeException e) {
             System.out.println(e.getMessage());
         }

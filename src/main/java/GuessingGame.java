@@ -36,7 +36,25 @@ public class GuessingGame {
         }
     }
 
-    // Game Methods
+
+    /**
+     * Makes a guess and returns a code based on the outcome.
+     * - 0: Correct guess
+     * - 1.x: Too high, x is how far off the guess was, score reduces by x
+     * - 2.x: Too low, x is how far off the guess was, score reduced by x
+     * - 3.0: Non-integer value, score reduced by 3
+     * - 4.0: Guess was already made
+     * - 5.0: Game over after 10 incorrect guesses, should set flag accordingly
+     * - 6.0: Guess made after game is over
+     *<p></p>
+     * The score is only set as described above.
+     * The method should also change Guess_count when appropriate and previousGuesses to keep track
+     * of what has been guessed already. Only valid guesses will count toward these.
+     *
+     * @param guess the user's guess as a string
+     * @return a double indicating the outcome of the guess
+     * @throws GuessOutOfRangeException if the guess is outside the allowed range (1-100)
+     */
     public double makeGuess(String guess) throws GuessOutOfRangeException {
         if (gameOver) {
             return GuessOutcome.GAME_OVER.getOutcomeValue();
@@ -176,25 +194,4 @@ public class GuessingGame {
 
 
 }
-
-
-/**
- * Makes a guess and returns a code based on the outcome.
- * - 0: Correct guess
- * - 1.x: Too high, x is how far off the guess was, score reduces by x
- * - 2.x: Too low, x is how far off the guess was, score reduced by x
- * - 3.0: Non-integer value, score reduced by 3
- * - 4.0: Guess was already made
- * - 5.0: Game over after 10 incorrect guesses, should set flag accordingly
- * - 6.0: Guess made after game is over
- *<p></p>
- * The score is only set as described above.
- * The method should also change Guess_count when appropriate and previousGuesses to keep track
- * of what has been guessed already. Only valid guesses will count toward these.
- *
- * @param guess the user's guess as a string
- * @return a double indicating the outcome of the guess
- * @throws GuessOutOfRangeException if the guess is outside the allowed range (1-100)
- */
-
 
